@@ -1,12 +1,13 @@
 import React from 'react';
-import './App.css';
+import '../App.css'
 import TaskBoard from "./TaskBoard";
 
 import axios from 'axios';
 
 class App extends React.Component{
   state = {
-    tasks: []
+    tasks: [], columns: []
+
   };
 
   componentDidMount(){
@@ -24,9 +25,7 @@ class App extends React.Component{
 
   render(){
     return (
-
-
-        <div className="container">
+        <div className="container App">
           <TaskBoard tasks={this.state.tasks}/>
         </div>
     );

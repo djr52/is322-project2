@@ -1,24 +1,20 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card'
-import ListGroupItem from "react-bootstrap/ListGroupItem";
-import ListGroup from "react-bootstrap/ListGroup";
+import styled from 'styled-components'
+
+
+const Container = styled.div`
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  padding: 8px;
+  margin-bottom: 8px;
+`;
+
 const TaskItem = props => {
+
     return(
-        <Card style={{ width: '18rem' }}>
-            <Card.Body>
-                <Card.Title>
-                    {props.task.column}
-                </Card.Title>
-                <ListGroup className="list-group-flush">
-                    <ListGroupItem className="list-group-item">
-                        {props.task.title}
-                    </ListGroupItem>
-                </ListGroup>
-
-            </Card.Body>
-        </Card>
-
-
+        <Container>
+            {props.task.title}
+        </Container>
     )
 
 };
