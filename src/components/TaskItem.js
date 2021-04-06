@@ -1,22 +1,27 @@
 import React from 'react';
-import styled from 'styled-components'
+import {ItemContainer} from '../react-styles/styles'
 import {Draggable} from 'react-beautiful-dnd'
 
 
-const Container = styled.div`
-  border: 1px solid lightgrey;
-  border-radius: 2px;
-  padding: 8px;
-  margin-bottom: 8px;
-`;
+
 
 const TaskItem = props => {
 
     return(
+        <Draggable draggableId={props.task.title} index={props.task.id}>
+            {provided =>(
+                <ItemContainer
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                >
+                    {props.task.title}
+                </ItemContainer>
+            )}
 
-        <Container>
-            {props.task.title}
-        </Container>
+        </Draggable>
+
+
     )
 
 };

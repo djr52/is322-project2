@@ -20,18 +20,23 @@ class App extends React.Component{
           this.setState({tasks: response.data});
         }).catch(error => {
           error.toString();
-
     });
   }
   updateColumns = (task) =>{
 
   };
+  onDragEnd = result =>{
+
+  };
 
   render(){
     return (
-        <div className="container App">
-          <TaskBoard tasks={this.state.tasks}/>
-        </div>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <div className="container App">
+            <TaskBoard tasks={this.state.tasks}/>
+          </div>
+        </DragDropContext>
+
     );
   }
 

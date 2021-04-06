@@ -1,34 +1,8 @@
 import React from 'react';
 import TaskItem from "./TaskItem";
-//import TaskColumn from "./TaskColumns";
-import styled from "styled-components";
-import TaskColumn from "./TaskColumns";
+import { Droppable } from 'react-beautiful-dnd';
+import {BoardContainer, Title, TaskList} from '../react-styles/styles'
 
-const Title = styled.div`
-  margin: 8px;
-  border: 1px solid lightgrey;
-  border-radius: 2px;
-  width: 220px;
-
-  display: flex;
-  flex-direction: column;
-`;
-const Container = styled.div`
-width: 100%;
-padding-right: 15px;
-padding-left: 15px;
-margin-right: auto;
-margin-left: auto;
-display: flex;
-`;
-
-const TaskList = styled.div`
-  padding: 8px;
-  transition: background-color 0.2s ease;
-  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
-  flex-grow: 1;
-  min-height: 100px;
-`;
 
 class TaskBoard extends React.Component{
 
@@ -40,24 +14,36 @@ class TaskBoard extends React.Component{
                 uniqueColumns.push(task.column)
             }
         });
+        //DO not manipulate data here, for example, when changing the column type, do it in the App, the algorithm below will only re render the new set
         const columns = uniqueColumns.map(column => {
-
-            const taskItems = this.props.tasks.map(task => {
+            const taskItems = this.props.tasks.map((task,index) => {
                 if(task.column === column){
-                    return <TaskItem task={task} key={task.id}/>
+                    return <TaskItem task={task} key={task.id} index={index}/>
                 }
             });
-            return <Title>{column}
-                <TaskList>
-                    {taskItems}
-                </TaskList>
+            return<Title>
+                {column}
+                <Droppable droppableId={column}>
+
+                    {provided =>(
+                        <TaskList
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                        >
+                            {taskItems}
+                            {provided.placeholder}
+                        </TaskList>
+                    )}
+
+                </Droppable>
+
             </Title>
         });
 
         return(
-            <Container>
+            <BoardContainer>
                 {columns}
-            </Container>
+            </BoardContainer>
         )
 
     }
