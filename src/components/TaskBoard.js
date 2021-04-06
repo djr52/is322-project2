@@ -4,7 +4,7 @@ import TaskItem from "./TaskItem";
 import styled from "styled-components";
 import TaskColumn from "./TaskColumns";
 
-const Container = styled.div`
+const Title = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
@@ -13,39 +13,55 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const Title = styled.h3`
-  padding: 8px;
+const Container = styled.div`
+width: 100%;
+padding-right: 15px;
+padding-left: 15px;
+margin-right: auto;
+margin-left: auto;
+display: flex;
 `;
-class TaskBoard extends  React.Component{
+
+const TaskList = styled.div`
+  padding: 8px;
+  transition: background-color 0.2s ease;
+  background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
+  flex-grow: 1;
+  min-height: 100px;
+`;
+
+class TaskBoard extends React.Component{
 
     render(){
-        const taskItems = this.props.tasks.map(task => {
-            return <TaskItem task={task} key={task.id}/>
-        });
+
         const uniqueColumns = [];
         this.props.tasks.map(task => {
             if (uniqueColumns.indexOf(task.column) === -1) {
                 uniqueColumns.push(task.column)
             }
         });
-        const columns = uniqueColumns.map(column =>{
-            return <TaskColumn column={column} key={column.id}/>
+        const columns = uniqueColumns.map(column => {
+
+            const taskItems = this.props.tasks.map(task => {
+                if(task.column === column){
+                    return <TaskItem task={task} key={task.id}/>
+                }
+            });
+            return <Title>{column}
+                <TaskList>
+                    {taskItems}
+                </TaskList>
+            </Title>
         });
+
         return(
             <Container>
-                <div>
-                </div>
-
-                <ul className="task-list task-group">
-                    {taskItems}
-                </ul>
+                {columns}
             </Container>
-
-
         )
 
     }
 }
 
 
-export default TaskBoard
+export default TaskBoard;

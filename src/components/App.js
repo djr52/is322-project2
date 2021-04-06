@@ -1,12 +1,13 @@
 import React from 'react';
 import '../App.css'
 import TaskBoard from "./TaskBoard";
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import axios from 'axios';
 
 class App extends React.Component{
   state = {
-    tasks: [], columns: []
+    tasks: []
 
   };
 
@@ -22,6 +23,9 @@ class App extends React.Component{
 
     });
   }
+  updateColumns = (task) =>{
+
+  };
 
   render(){
     return (
