@@ -1,19 +1,50 @@
 import React from 'react';
 import '../App.css'
 import TaskBoard from "./TaskBoard";
+import MobileTaskBoard from "./MobileTaskBoard";
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import axios from 'axios';
+import SelectTaskBoard from "./SelectTaskBoard";
+const TABLET_BREAKPOINT = 768;
 
 class App extends React.Component{
   state = {
-    tasks: []
+      tasks: [],
+      breakpoint: 'desktop',
+      browserWidth: 0
 
   };
 
+  TaskBoardResolution= (props)=>{
+      const BreakPoint = props.BreakPoint;
+
+      if (BreakPoint === 'mobile'){
+          return <MobileTaskBoard tasks={this.state.tasks}/>
+      }
+      else{
+          return <TaskBoard tasks={this.state.tasks}/>
+      }
+  };
+
+
   componentDidMount(){
     this.getData();
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize()
   }
+
+  handleResize = () =>{
+      const browserWidth = window.innerWidth;
+      let breakpoint = 'desktop';
+      if(browserWidth < TABLET_BREAKPOINT){
+          breakpoint = 'mobile'
+      }
+      this.setState({breakpoint: breakpoint, browserWidth: browserWidth})
+
+
+  };
+
   getData() {
     axios.get('http://my-json-server.typicode.com/bnissen24/project2DB/posts')
         .then(response => {
@@ -22,10 +53,7 @@ class App extends React.Component{
           error.toString();
     });
   }
-  updateColumns = (task, column) =>{
 
-
-  };
   onDragEnd = result =>{
       const {destination, source, draggableId} = result;
       if(!destination){
@@ -42,7 +70,7 @@ class App extends React.Component{
 
       const end = destination.droppableId;
       const taskIndex = this.state.tasks.findIndex(t => t.title === draggableId);
-      var taskList = this.state.tasks;
+      let taskList = this.state.tasks;
 
       taskList.splice(taskIndex, 1);
 
@@ -63,7 +91,7 @@ class App extends React.Component{
     return (
         <DragDropContext onDragEnd={this.onDragEnd}>
           <div className="container App">
-            <TaskBoard tasks={this.state.tasks}/>
+              <SelectTaskBoard BreakPoint={this.state.breakpoint} tasks={this.state.tasks}/>
           </div>
         </DragDropContext>
 

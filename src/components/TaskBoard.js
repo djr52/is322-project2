@@ -1,7 +1,9 @@
 import React from 'react';
 import TaskItem from "./TaskItem";
+import {DropdownButton, Dropdown} from 'react-bootstrap'
 import { Droppable } from 'react-beautiful-dnd';
 import {BoardContainer, Title, TaskList} from '../react-styles/styles'
+
 
 
 class TaskBoard extends React.Component{
@@ -14,7 +16,6 @@ class TaskBoard extends React.Component{
                 uniqueColumns.push(task.column)
             }
         });
-        //DO not manipulate data here, for example, when changing the column type, do it in the App, the algorithm below will only re render the new set
         const columns = uniqueColumns.map((column, cIndex) => {
             const taskItems = this.props.tasks.map((task, tIndex) => {
                 if(task.column === column){
@@ -36,7 +37,6 @@ class TaskBoard extends React.Component{
                             {provided.placeholder}
                         </TaskList>
                     )}
-
                 </Droppable>
 
             </Title>
