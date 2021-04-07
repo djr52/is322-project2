@@ -15,20 +15,22 @@ class TaskBoard extends React.Component{
             }
         });
         //DO not manipulate data here, for example, when changing the column type, do it in the App, the algorithm below will only re render the new set
-        const columns = uniqueColumns.map(column => {
-            const taskItems = this.props.tasks.map((task,index) => {
+        const columns = uniqueColumns.map((column, cIndex) => {
+            const taskItems = this.props.tasks.map((task, tIndex) => {
                 if(task.column === column){
-                    return <TaskItem task={task} key={task.id} index={index}/>
+                    return <TaskItem task={task} key={task.id} index={tIndex} markTask={this.props.markTask}/>
                 }
             });
             return<Title>
                 {column}
-                <Droppable droppableId={column}>
+                <Droppable droppableId={column} index={cIndex}>
 
-                    {provided =>(
+                    {(provided,snapshot) =>(
                         <TaskList
                             ref={provided.innerRef}
                             {...provided.droppableProps}
+                            isDraggingOver={snapshot.isDraggingOver}
+
                         >
                             {taskItems}
                             {provided.placeholder}

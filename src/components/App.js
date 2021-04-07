@@ -22,12 +22,42 @@ class App extends React.Component{
           error.toString();
     });
   }
-  updateColumns = (task) =>{
+  updateColumns = (task, column) =>{
+
 
   };
   onDragEnd = result =>{
+      const {destination, source, draggableId} = result;
+      if(!destination){
+          return
+      }
+
+      if (
+          destination.droppableId === source.droppableId &&
+          destination.index === source.index
+      )
+      {
+          return;
+      }
+
+      const end = destination.droppableId;
+      const taskIndex = this.state.tasks.findIndex(t => t.title === draggableId);
+      var taskList = this.state.tasks;
+
+      taskList.splice(taskIndex, 1);
+
+      taskList.push({
+          title: draggableId,
+          id: this.state.tasks.length + 1,
+          type: 'task',
+          column: end
+      });
+
+      this.setState(taskList)
 
   };
+
+
 
   render(){
     return (

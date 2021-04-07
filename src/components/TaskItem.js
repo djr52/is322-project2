@@ -9,11 +9,13 @@ const TaskItem = props => {
 
     return(
         <Draggable draggableId={props.task.title} index={props.task.id}>
-            {provided =>(
+            {(provided, snapshot) =>(
                 <ItemContainer
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
+                    isDragging={snapshot.isDragging}
+
                 >
                     {props.task.title}
                 </ItemContainer>
